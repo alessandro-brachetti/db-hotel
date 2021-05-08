@@ -1,0 +1,50 @@
+1. Come si chiamano gli ospiti che hanno fatto più di due prenotazioni?
+
+SELECT `ospiti`.`name`, COUNT(`prenotazioni_has_ospiti`.`id`) AS `n_prenotazioni` 
+FROM `prenotazioni_has_ospiti`
+INNER JOIN `ospiti`
+ON `ospiti`.`id` = `prenotazioni_has_ospiti`.`ospite_id`
+GROUP BY `ospiti`.`name` HAVING `n_prenotazioni` > 2;
+
+2. Stampare tutti gli ospiti per ogni prenotazione
+
+SELECT `prenotazioni_has_ospiti`.`prenotazione_id`, `prenotazioni_has_ospiti`.`ospite_id`,`ospiti`.`name`, `ospiti`.`lastname` 
+FROM `prenotazioni_has_ospiti` 
+INNER JOIN `ospiti` 
+ON `prenotazioni_has_ospiti`.`ospite_id` = `ospiti`.`id`
+
+3. Stampare Nome, Cognome, Prezzo e Pagante per tutte le
+prenotazioni fatte a Maggio 2018
+
+SELECT `prenotazioni`.`id`, `prenotazioni`.`created_at`, `paganti`.`name`, `paganti`.`lastname`, `pagamenti`.`price` 
+FROM `pagamenti`
+INNER JOIN `prenotazioni`
+ON `pagamenti`.`prenotazione_id` = `prenotazioni`.`id`
+INNER JOIN `paganti`
+ON `pagamenti`.`pagante_id` = `paganti`.`id`
+WHERE MONTH(`prenotazioni`.`created_at`) = '5'
+
+4. Fai la somma di tutti i prezzi delle prenotazioni per le stanze del
+primo piano
+
+SELECT SUM(`pagamenti`.`price`) FROM `prenotazioni`
+INNER JOIN `pagamenti`
+ON `prenotazioni`.`id` = `pagamenti`.`prenotazione_id`
+INNER JOIN `stanze`
+ON `prenotazioni`.`stanza_id` = `stanze`.`id`
+WHERE `stanze`.`floor` = 1
+
+5. Prendi i dati di fatturazione per la prenotazione con id=7
+
+SELECT `prenotazioni`.`id`, `paganti`.`name`, `paganti`.`lastname`, `paganti`.`address`, `pagamenti`.`price`, `pagamenti`.`status` FROM `pagamenti`
+INNER JOIN `prenotazioni`
+ON `pagamenti`.`prenotazione_id` = `prenotazioni`.`id`
+INNER JOIN `paganti`
+ON `pagamenti`.`pagante_id` = `paganti`.`id`
+WHERE `prenotazioni`.`id` = 7
+
+6. Le stanze sono state tutte prenotate almeno una volta?
+   (Visualizzare le stanze non ancora prenotate)
+
+SELECT `id`, `room_number` FROM `stanze`
+WHERE `id` NOT IN(SELECT `stanza_id` FROM `prenotazioni`)
