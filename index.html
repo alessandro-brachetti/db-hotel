@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>DB-Hotel</title>
+
+</head>
+
+<body>
+  <div id="root">
+    <div v-for="stanza in stanze">
+      <div> <span>ID:</span>{{ stanza.id }}</div>
+      <div @click="getInfo(stanza.id)"> <span>Room:</span>{{ stanza.room_number }}</div>
+    </div>
+    <div v-if="stanza">
+      <div><strong>ID:</strong> {{ stanza.id }} </div>
+      <div><strong>Room:</strong> {{ stanza.room_number }} </div>
+      <div><strong>Piano:</strong> {{ stanza.floor }} </div>
+      <div><strong>Posti letto:</strong> {{ stanza.beds }} </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+  <script src="./main.js" charset="utf-8"></script>
+</body>
+</html>
